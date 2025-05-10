@@ -158,8 +158,8 @@
             margin-bottom: 50px;
             color: var(--gold);
         }
+
         
-        /* Enhanced Timeline Section */
         .timeline {
             position: relative;
             max-width: 1200px;
@@ -364,7 +364,7 @@
             font-size: 1.1rem;
         }
         
-        /* Marine Life Section */
+
         .marine-life {
             display: flex;
             flex-wrap: wrap;
@@ -430,7 +430,7 @@
             border: 1px solid #34c759;
         }
         
-        /* Language Toggle */
+ 
         .lang-toggle {
             position: fixed;
             top: 20px;
@@ -456,7 +456,7 @@
             color: var(--blue-dark);
         }
         
-        /* Footer */
+
         footer {
             background-color: rgba(2, 0, 36, 0.9);
             padding: 30px 20px;
@@ -468,7 +468,7 @@
             font-family: 'Playfair Display', serif;
         }
         
-        /* Transformation Section */
+
         .transformation-section {
             padding: 150px 20px;
             text-align: center;
@@ -543,7 +543,7 @@
             opacity: 0;
         }
         
-        /* Animations */
+
         @keyframes float {
             0% {
                 transform: translateY(0) rotate(0deg);
@@ -600,7 +600,7 @@
             50% { transform: scale(1.05); text-shadow: 0 0 30px rgba(255, 215, 0, 1); }
         }
         
-        /* Responsive */
+    
         @media screen and (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
@@ -710,18 +710,18 @@
     </style>
 </head>
 <body>
-    <!-- Language Toggle -->
+   
     <div class="lang-toggle" id="lang-toggle">فارسی</div>
 
-    <!-- Hero Section -->
+
     <section class="hero">
         <div id="map-container">
             <svg id="persian-gulf-map" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
-                <!-- Persian Gulf outline -->
+             
                 <path id="persian-gulf" d="M150,400 Q200,350 250,380 Q300,400 350,380 Q400,350 450,370 Q500,400 550,380 Q600,350 650,370 Q700,400 750,380 Q800,350 850,400" 
                       fill="none" stroke="#3e92cc" stroke-width="3" />
                 
-                <!-- Coastal countries -->
+               
                 <circle cx="180" cy="380" r="5" fill="#ffd700" class="country" data-name-en="Iran" data-name-fa="ایران" />
                 <circle cx="300" cy="350" r="5" fill="#ffd700" class="country" data-name-en="Iraq" data-name-fa="عراق" />
                 <circle cx="400" cy="330" r="5" fill="#ffd700" class="country" data-name-en="Kuwait" data-name-fa="کویت" />
@@ -730,12 +730,12 @@
                 <circle cx="700" cy="350" r="5" fill="#ffd700" class="country" data-name-en="UAE" data-name-fa="امارات" />
                 <circle cx="800" cy="380" r="5" fill="#ffd700" class="country" data-name-en="Oman" data-name-fa="عمان" />
                 
-                <!-- Islands -->
+          
                 <circle cx="350" cy="420" r="4" fill="#f5deb3" class="island" data-name-en="Qeshm Island" data-name-fa="جزیره قشم" />
                 <circle cx="450" cy="450" r="4" fill="#f5deb3" class="island" data-name-en="Kish Island" data-name-fa="جزیره کیش" />
                 <circle cx="550" cy="400" r="4" fill="#f5deb3" class="island" data-name-en="Abu Musa" data-name-fa="ابوموسی" />
                 
-                <!-- Cities -->
+              
                 <circle cx="200" cy="400" r="3" fill="#ffffff" class="city" data-name-en="Bandar Abbas" data-name-fa="بندرعباس" />
                 <circle cx="320" cy="370" r="3" fill="#ffffff" class="city" data-name-en="Basra" data-name-fa="بصره" />
                 <circle cx="420" cy="350" r="3" fill="#ffffff" class="city" data-name-en="Kuwait City" data-name-fa="شهر کویت" />
@@ -753,7 +753,7 @@
         <div class="scroll-down" id="scroll-down">↓</div>
     </section>
 
-    <!-- Historical of Persian Gulf Section -->
+    
     <section class="content-section with-bg" style="background-image: url('https://s6.uupload.ir/files/persian_gulf_4lep.jpg')">
         <h2 class="section-title" data-en="Historical of Persian Gulf" data-fa="تاریخ خلیج همیشه فارس">Historical of Persian Gulf</h2>
         <div class="timeline">
@@ -800,7 +800,7 @@
         </div>
     </section>
 
-    <!-- Marine Life Conservation Section -->
+   
     <section class="content-section">
         <h2 class="section-title" data-en="Marine Life Conservation" data-fa="حیات دریا">Marine Life</h2>
         <div class="marine-life">
@@ -834,7 +834,7 @@
         </div>
     </section>
 
-    <!-- Transformation Section -->
+ 
     <section class="transformation-section" id="transformation-section">
         <div class="text-container">
             <h2 class="arab-gulf-text">Arab Gulf</h2>
@@ -849,11 +849,11 @@
            data-fa="© خلیج فارس | خلیج فارس همیشه خلیج فارس خواهد بود">© Persian Gulf | The Persian Gulf will always be the Persian Gulf</p>
     </footer>
 
-    <!-- JavaScript -->
+
     <script src="https://cdn.jsdelivr.net/gh/persian-tools/persian-tools/build/persian-tools.umd.js"></script>
     
     <script>
-        // Create bubbles
+   
         function createBubbles() {
             const container = document.getElementById('bubbles-container');
             const bubbleCount = 20;
@@ -877,7 +877,7 @@
             }
         }
         
-        // Animate the Persian Gulf path on load
+      
         function animateGulfPath() {
             const path = document.getElementById('persian-gulf');
             const length = path.getTotalLength();
@@ -892,7 +892,7 @@
             }, 500);
         }
         
-        // Language toggle functionality
+
         function toggleLanguage() {
             const body = document.body;
             const currentLang = body.getAttribute('lang') || 'en';
@@ -901,7 +901,7 @@
             body.setAttribute('lang', newLang);
             document.getElementById('lang-toggle').textContent = newLang === 'fa' ? 'English' : 'فارسی';
             
-            // Update all elements with data attributes
+        
             document.querySelectorAll('[data-en], [data-fa]').forEach(el => {
                 if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                     el.placeholder = el.getAttribute(`data-${newLang}`);
@@ -910,7 +910,7 @@
                 }
             });
             
-            // Convert numbers to Persian if needed
+          
             if (newLang === 'fa') {
                 document.querySelectorAll('span, p, h1, h2, h3, h4, h5, h6').forEach(el => {
                     el.textContent = el.textContent.replace(/\d+/g, num => persianTools.englishToPersian(num));
@@ -923,8 +923,8 @@
             
             localStorage.setItem('preferredLang', newLang);
         }
+
         
-        // Initialize Timeline Animation
         function initTimeline() {
             const eras = document.querySelectorAll('.era');
             
@@ -941,7 +941,7 @@
             });
         }
         
-        // Setup transformation animation with restart capability
+
         function setupTransformation() {
             const section = document.getElementById('transformation-section');
             const arabGulfText = document.querySelector('.arab-gulf-text');
@@ -954,7 +954,7 @@
             let emojis = [];
             let animationTimeout;
             
-            // Create particles
+       
             function createParticles() {
                 particles = [];
                 const particleCount = 80;
@@ -975,7 +975,7 @@
                 }
             }
             
-            // Create disgust emoji rain
+     
             function createEmojiRain() {
                 removeEmojiRain();
                 const container = document.querySelector('.text-container');
@@ -993,7 +993,7 @@
                 }
             }
             
-            // Remove all disgust emojis
+   
             function removeEmojiRain() {
                 emojis.forEach(emoji => {
                     if (emoji.parentNode) {
@@ -1003,7 +1003,7 @@
                 emojis = [];
             }
             
-            // Animate particles
+    
             function animateParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 
@@ -1013,21 +1013,21 @@
                     const p = particles[i];
                     
                     if (p.currentLife < p.life) {
-                        // Update position
+                   
                         p.x += p.speedX;
                         p.y += p.speedY;
                         p.rotation += p.rotationSpeed;
                         p.currentLife++;
                         
-                        // Apply gravity
+                      
                         p.speedY += 0.2;
                         
-                        // Draw particle
+                      
                         ctx.save();
                         ctx.translate(p.x, p.y);
                         ctx.rotate(p.rotation * Math.PI / 180);
                         
-                        // Gold sparkle effect
+             
                         const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, p.size);
                         gradient.addColorStop(0, p.color);
                         gradient.addColorStop(1, 'rgba(255,215,0,0)');
@@ -1048,8 +1048,8 @@
                     canvas.style.opacity = '0';
                 }
             }
+
             
-            // Reset animation state
             function resetAnimation() {
                 arabGulfText.style.animation = '';
                 arabGulfText.style.opacity = '1';
@@ -1067,49 +1067,49 @@
                 removeEmojiRain();
                 clearTimeout(animationTimeout);
             }
+
             
-            // Start transformation animation
             function startTransformation() {
                 resetAnimation();
                 
-                // Set canvas size
+     
                 canvas.width = section.offsetWidth;
                 canvas.height = section.offsetHeight;
                 
                 createParticles();
                 createEmojiRain();
                 
-                // 1. Initial shake effect on "Arab Gulf"
+             
                 arabGulfText.style.animation = 'arab-gulf-shake 0.5s ease infinite';
                 
-                // 2. After 1.5 seconds, start transformation
+        
                 animationTimeout = setTimeout(() => {
-                    // Create power wave animation
+               
                     powerWave.style.animation = 'power-surge 0.8s ease-out forwards';
                     
-                    // Persian Gulf emerges with power
+                
                     persianGulfText.style.opacity = '1';
                     persianGulfText.style.animation = 'persian-gulf-emerge 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
                     
-                    // Arab Gulf shrinks and fades away weakly
+            
                     arabGulfText.style.animation = 'arab-gulf-disappear 0.6s ease-in forwards';
                     
-                    // Remove all disgust emojis
+               
                     removeEmojiRain();
                     
-                    // After Persian Gulf emerges, show celebration
+                   
                     setTimeout(() => {
                         // Show particles
                         canvas.style.opacity = '1';
                         animateParticles();
                         
-                        // Add pulsing effect
+
                         persianGulfText.style.animation = 'celebrate-pulse 2s ease infinite';
                     }, 800);
                 }, 1500);
             }
             
-            // Intersection Observer to restart animation when scrolled into view
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -1123,23 +1123,23 @@
             observer.observe(section);
         }
 
-        // Initialize everything when the page loads
+
         window.addEventListener('DOMContentLoaded', () => {
             createBubbles();
             animateGulfPath();
             initTimeline();
             setupTransformation();
             
-            // Set initial language
+
             const preferredLang = localStorage.getItem('preferredLang') || 'en';
             if (preferredLang === 'fa') {
                 toggleLanguage();
             }
             
-            // Language toggle event
+
             document.getElementById('lang-toggle').addEventListener('click', toggleLanguage);
             
-            // Scroll down button
+
             document.getElementById('scroll-down').addEventListener('click', () => {
                 window.scrollTo({
                     top: window.innerHeight,
@@ -1147,7 +1147,7 @@
                 });
             });
             
-            // Map point hover effects
+   
             document.querySelectorAll('.country, .island, .city').forEach(point => {
                 point.addEventListener('mouseenter', (e) => {
                     const lang = document.body.getAttribute('lang') || 'en';
@@ -1174,7 +1174,7 @@
             });
         });
 
-        // Add tooltip styles dynamically
+    
         const style = document.createElement('style');
         style.textContent = `
             .tooltip {
@@ -1198,7 +1198,7 @@
         `;
         document.head.appendChild(style);
         
-        // Load Persian font
+
         const persianFont = document.createElement('link');
         persianFont.href = 'https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts.css';
         persianFont.rel = 'stylesheet';
