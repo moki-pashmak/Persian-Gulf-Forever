@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Persian Gulf</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue-dark: #0a2463;
+            --blue-medium: #3e92cc;
+            --blue-light: #d6f1ff;
+            --gold: #ffd700;
+            --sand: #f5deb3;
+            --transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            overflow-x: hidden;
+            background-color: var(--blue-dark);
+            transition: var(--transition);
+        }
+        
+        body[lang="fa"] {
+            font-family: 'Vazirmatn', 'Poppins', sans-serif;
+            direction: rtl;
+        }
+        
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        #map-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        #persian-gulf-map {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #020024 0%, #090979 35%, #00d4ff 100%);
+        }
+        
+        .water-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.2)" fill-opacity="0.1" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x;
+            background-size: contain;
+            background-position: bottom;
+            animation: wave 15s linear infinite;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .bubbles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            pointer-events: none;
+        }
+        
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            color: var(--gold);
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            z-index: 5;
+        }
+        
+        .content-section {
+            padding: 80px 20px;
+            position: relative;
+        }
+        
+        .content-section.with-bg {
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .content-section.with-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 0;
+        }
+        
+        .content-section > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--gold);
+        }
+        
+        /* Enhanced Timeline Section */
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background: linear-gradient(to bottom, var(--gold), var(--blue-medium));
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 3px;
+            z-index: 1;
+        }
+        
+        body[lang="fa"] .timeline::after {
+            left: auto;
+            right: 50%;
+            margin-left: 0;
+            margin-right: -3px;
+        }
+        
+        .era {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+            z-index: 2;
+        }
+        
+        body[lang="fa"] .era {
+            padding-right: 40px;
+            padding-left: 0;
+        }
+        
+        .era.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .era::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            right: -15px;
+            background-color: var(--gold);
+            border: 4px solid var(--blue-dark);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 3;
+            box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.3);
+        }
+        
+        body[lang="fa"] .era::after {
+            right: auto;
+            left: -15px;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        body[lang="fa"] .left {
+            left: auto;
+            right: 50%;
+        }
+        
+        body[lang="fa"] .right {
+            left: auto;
+            right: 0;
+        }
+        
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 2;
+            right: 30px;
+            border: medium solid var(--gold);
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent var(--gold);
+            transition: var(--transition);
+        }
+        
+        body[lang="fa"] .left::before {
+            right: auto;
+            left: 30px;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent var(--gold) transparent transparent;
+        }
+        
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 2;
+            left: 30px;
+            border: medium solid var(--gold);
+            border-width: 10px 10px 10px 0;
+            border-color: transparent var(--gold) transparent transparent;
+            transition: var(--transition);
+        }
+        
+        body[lang="fa"] .right::before {
+            left: auto;
+            right: 30px;
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent var(--gold);
+        }
+        
+        .era-content {
+            padding: 25px;
+            background-color: rgba(10, 36, 99, 0.7);
+            position: relative;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+            border-left: 3px solid var(--gold);
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .era:hover .era-content {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background-color: rgba(10, 36, 99, 0.8);
+            border-left-width: 5px;
+        }
+        
+        body[lang="fa"] .era-content {
+            border-left: none;
+            border-right: 3px solid var(--gold);
+        }
+        
+        .era:hover .era-content {
+            border-left-width: 5px;
+        }
+        
+        body[lang="fa"] .era:hover .era-content {
+            border-right-width: 5px;
+        }
+        
+        .right .era-content {
+            border-left: none;
+            border-right: 3px solid var(--gold);
+        }
+        
+        body[lang="fa"] .right .era-content {
+            border-right: none;
+            border-left: 3px solid var(--gold);
+        }
+        
+        .era-date {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .era-date::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--gold);
+        }
+        
+        body[lang="fa"] .era-date::after {
+            left: auto;
+            right: 0;
+        }
+        
+        .era h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: white;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .era p {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        /* Marine Life Section */
+        .marine-life {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .species-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            width: 350px;
+            backdrop-filter: blur(5px);
+            transition: var(--transition);
+            border-top: 3px solid var(--gold);
+        }
+        
+        .species-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .species-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .species-name {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+        }
+        
+        .species-status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .status-endangered {
+            background-color: rgba(255, 59, 48, 0.2);
+            color: #ff3b30;
+            border: 1px solid #ff3b30;
+        }
+        
+        .status-vulnerable {
+            background-color: rgba(255, 149, 0, 0.2);
+            color: #ff9500;
+            border: 1px solid #ff9500;
+        }
+        
+        .status-least-concern {
+            background-color: rgba(52, 199, 89, 0.2);
+            color: #34c759;
+            border: 1px solid #34c759;
+        }
+        
+        /* Language Toggle */
+        .lang-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: bold;
+        }
+        
+        body[lang="fa"] .lang-toggle {
+            right: auto;
+            left: 20px;
+        }
+        
+        .lang-toggle:hover {
+            background-color: var(--gold);
+            color: var(--blue-dark);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: rgba(2, 0, 36, 0.9);
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        footer p {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Transformation Section */
+        .transformation-section {
+            padding: 150px 20px;
+            text-align: center;
+            background-color: var(--blue-dark);
+            position: relative;
+            overflow: hidden;
+            margin: 50px 0;
+        }
+        
+        .text-container {
+            position: relative;
+            display: inline-block;
+            min-height: 120px;
+        }
+        
+        .arab-gulf-text {
+            font-size: 3.5rem;
+            font-family: 'Playfair Display', serif;
+            color: #ff3b30;
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            transform-origin: center bottom;
+            text-shadow: 0 2px 10px rgba(255, 59, 48, 0.5);
+        }
+        
+        .persian-gulf-text {
+            font-size: 3.5rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            z-index: 3;
+            transform: translateY(30px) scale(0.8);
+            transform-origin: center bottom;
+            display: inline-block;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+        
+        .particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+        }
+        
+        .disgust-emoji {
+            position: absolute;
+            font-size: 1.5rem;
+            z-index: 4;
+            animation: emoji-fall linear forwards;
+            opacity: 0.7;
+        }
+        
+        .power-wave {
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: radial-gradient(ellipse at center, rgba(255,215,0,0.8) 0%, rgba(255,215,0,0) 70%);
+            z-index: 4;
+            transform: scaleY(0);
+            transform-origin: center bottom;
+            opacity: 0;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes wave {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1440px; }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+        
+        @keyframes emoji-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(calc(100vh + 100px)) rotate(360deg); opacity: 0; }
+        }
+        
+        @keyframes arab-gulf-shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        @keyframes power-surge {
+            0% { transform: scaleY(0); opacity: 0; }
+            30% { transform: scaleY(1); opacity: 0.8; }
+            100% { transform: scaleY(1.5); opacity: 0; }
+        }
+        
+        @keyframes persian-gulf-emerge {
+            0% { transform: translateY(30px) scale(0.8); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        
+        @keyframes arab-gulf-disappear {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: scale(0) rotate(180deg); opacity: 0; }
+        }
+        
+        @keyframes celebrate-pulse {
+            0%, 100% { transform: scale(1); text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+            50% { transform: scale(1.05); text-shadow: 0 0 30px rgba(255, 215, 0, 1); }
+        }
+        
+        /* Responsive */
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            
+            body[lang="fa"] .timeline::after {
+                left: auto;
+                right: 31px;
+            }
+            
+            .era {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            body[lang="fa"] .era {
+                padding-left: 25px;
+                padding-right: 70px;
+            }
+            
+            .era::after {
+                left: 18px;
+            }
+            
+            body[lang="fa"] .era::after {
+                left: auto;
+                right: 18px;
+            }
+            
+            .left::before, .right::before {
+                left: 60px;
+                border: medium solid var(--gold);
+                border-width: 10px 10px 10px 0;
+                border-color: transparent var(--gold) transparent transparent;
+            }
+            
+            body[lang="fa"] .left::before, 
+            body[lang="fa"] .right::before {
+                left: auto;
+                right: 60px;
+                border-width: 10px 0 10px 10px;
+                border-color: transparent transparent transparent var(--gold);
+            }
+            
+            .left, .right {
+                left: 0;
+            }
+            
+            body[lang="fa"] .left, 
+            body[lang="fa"] .right {
+                left: auto;
+                right: 0;
+            }
+            
+            .right .era-content, .left .era-content {
+                border-left: 3px solid var(--gold);
+                border-right: none;
+            }
+            
+            body[lang="fa"] .right .era-content,
+            body[lang="fa"] .left .era-content {
+                border-left: none;
+                border-right: 3px solid var(--gold);
+            }
+            
+            .species-card {
+                width: 100%;
+            }
+            
+            .lang-toggle {
+                top: 15px;
+                right: 15px;
+            }
+            
+            body[lang="fa"] .lang-toggle {
+                right: auto;
+                left: 15px;
+            }
+            
+            .era-content {
+                padding: 20px;
+            }
+            
+            .arab-gulf-text,
+            .persian-gulf-text {
+                font-size: 2.5rem;
+            }
+            
+            .transformation-section {
+                padding: 100px 20px;
+                margin: 30px 0;
+            }
+            
+            .disgust-emoji {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Toggle -->
+    <div class="lang-toggle" id="lang-toggle">فارسی</div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div id="map-container">
+            <svg id="persian-gulf-map" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+                <!-- Persian Gulf outline -->
+                <path id="persian-gulf" d="M150,400 Q200,350 250,380 Q300,400 350,380 Q400,350 450,370 Q500,400 550,380 Q600,350 650,370 Q700,400 750,380 Q800,350 850,400" 
+                      fill="none" stroke="#3e92cc" stroke-width="3" />
+                
+                <!-- Coastal countries -->
+                <circle cx="180" cy="380" r="5" fill="#ffd700" class="country" data-name-en="Iran" data-name-fa="ایران" />
+                <circle cx="300" cy="350" r="5" fill="#ffd700" class="country" data-name-en="Iraq" data-name-fa="عراق" />
+                <circle cx="400" cy="330" r="5" fill="#ffd700" class="country" data-name-en="Kuwait" data-name-fa="کویت" />
+                <circle cx="500" cy="350" r="5" fill="#ffd700" class="country" data-name-en="Saudi Arabia" data-name-fa="عربستان سعودی" />
+                <circle cx="600" cy="330" r="5" fill="#ffd700" class="country" data-name-en="Qatar" data-name-fa="قطر" />
+                <circle cx="700" cy="350" r="5" fill="#ffd700" class="country" data-name-en="UAE" data-name-fa="امارات" />
+                <circle cx="800" cy="380" r="5" fill="#ffd700" class="country" data-name-en="Oman" data-name-fa="عمان" />
+                
+                <!-- Islands -->
+                <circle cx="350" cy="420" r="4" fill="#f5deb3" class="island" data-name-en="Qeshm Island" data-name-fa="جزیره قشم" />
+                <circle cx="450" cy="450" r="4" fill="#f5deb3" class="island" data-name-en="Kish Island" data-name-fa="جزیره کیش" />
+                <circle cx="550" cy="400" r="4" fill="#f5deb3" class="island" data-name-en="Abu Musa" data-name-fa="ابوموسی" />
+                
+                <!-- Cities -->
+                <circle cx="200" cy="400" r="3" fill="#ffffff" class="city" data-name-en="Bandar Abbas" data-name-fa="بندرعباس" />
+                <circle cx="320" cy="370" r="3" fill="#ffffff" class="city" data-name-en="Basra" data-name-fa="بصره" />
+                <circle cx="420" cy="350" r="3" fill="#ffffff" class="city" data-name-en="Kuwait City" data-name-fa="شهر کویت" />
+                <circle cx="520" cy="370" r="3" fill="#ffffff" class="city" data-name-en="Dammam" data-name-fa="دمام" />
+                <circle cx="620" cy="350" r="3" fill="#ffffff" class="city" data-name-en="Doha" data-name-fa="دوحه" />
+                <circle cx="720" cy="370" r="3" fill="#ffffff" class="city" data-name-en="Dubai" data-name-fa="دبی" />
+            </svg>
+        </div>
+        <div class="water-overlay"></div>
+        <div class="bubbles" id="bubbles-container"></div>
+        <div class="hero-content">
+            <h1 data-en="The Persian Gulf" data-fa="خلیج فارس">The Persian Gulf</h1>
+            <p class="subtitle" data-en=" A journey into the history of the Persian Gulf" data-fa="سفری به تاریخ خلیج فارس"> A journey into the history of the Persian Gulf</p>
+        </div>
+        <div class="scroll-down" id="scroll-down">↓</div>
+    </section>
+
+    <!-- Historical of Persian Gulf Section -->
+    <section class="content-section with-bg" style="background-image: url('https://s6.uupload.ir/files/persian_gulf_4lep.jpg')">
+        <h2 class="section-title" data-en="Historical of Persian Gulf" data-fa="تاریخ خلیج همیشه فارس">Historical of Persian Gulf</h2>
+        <div class="timeline">
+            <div class="era left">
+                <div class="era-content">
+                    <div class="era-date">550 BC - 330 BC</div>
+                    <h3 data-en="Achaemenid Empire" data-fa="امپراتوری هخامنشی">Achaemenid Empire</h3>
+                    <p data-en="The name 'Persian Gulf' was first used during the Achaemenid Empire. Greek historians like Herodotus referred to it as 'Persikos kolpos' in their records." 
+                       data-fa="نام 'خلیج فارس' اولین بار در دوران هخامنشیان استفاده شد. مورخان یونانی مانند هرودوت آن را 'پرسیکوس کولپوس' نامیدند.">
+                       The name 'Persian Gulf' was first used during the Achaemenid Empire. Greek historians like Herodotus referred to it as 'Persikos kolpos' in their records.
+                    </p>
+                </div>
+            </div>
+            <div class="era right">
+                <div class="era-content">
+                    <div class="era-date">651 AD - 1258 AD</div>
+                    <h3 data-en="Islamic Golden Age" data-fa="عصر طلایی اسلام">Islamic Golden Age</h3>
+                    <p data-en="Arab geographers and historians consistently used 'Bahr al-Fars' (Persian Gulf) in their works, including famous scholars like Al-Masudi and Ibn Khordadbeh." 
+                       data-fa="جغرافیدانان و مورخان عرب از جمله دانشمندانی مانند مسعودی و ابن خردادبه همواره از نام 'بحر فارس' استفاده کردند.">
+                       Arab geographers and historians consistently used 'Bahr al-Fars' (Persian Gulf) in their works, including famous scholars like Al-Masudi and Ibn Khordadbeh.
+                    </p>
+                </div>
+            </div>
+            <div class="era left">
+                <div class="era-content">
+                    <div class="era-date">16th - 19th Century</div>
+                    <h3 data-en="European Exploration" data-fa="اکتشافات اروپایی">European Exploration</h3>
+                    <p data-en="All European maps and documents from this period used 'Persian Gulf.' The British Admiralty charts and French maps maintained this historical name." 
+                       data-fa="تمام نقشه‌ها و اسناد اروپایی در این دوره از نام 'خلیج فارس' استفاده کردند. نقشه‌های دریایی بریتانیا و فرانسه این نام تاریخی را حفظ کردند.">
+                       All European maps and documents from this period used 'Persian Gulf.' The British Admiralty charts and French maps maintained this historical name.
+                    </p>
+                </div>
+            </div>
+            <div class="era right">
+                <div class="era-content">
+                    <div class="era-date">20th Century - Present</div>
+                    <h3 data-en="Modern Era" data-fa="دوره معاصر">Modern Era</h3>
+                    <p data-en="The United Nations has issued multiple directives confirming 'Persian Gulf' as the official geographical name, used in all official UN documents and maps." 
+                       data-fa="سازمان ملل متحد بارها تأیید کرده که 'خلیج فارس' نام رسمی جغرافیایی است و در تمام اسناد و نقشه‌های رسمی سازمان ملل استفاده می‌شود.">
+                       The United Nations has issued multiple directives confirming 'Persian Gulf' as the official geographical name, used in all official UN documents and maps.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marine Life Conservation Section -->
+    <section class="content-section">
+        <h2 class="section-title" data-en="Marine Life Conservation" data-fa="حیات دریا">Marine Life</h2>
+        <div class="marine-life">
+            <div class="species-card">
+                <img src="https://s6.uupload.ir/files/wp10681236-dugong-wallpapers_8kaj.jpg" alt="Dugong" class="species-image">
+                <h3 class="species-name" data-en="Dugong" data-fa="دوگونگ">Dugong</h3>
+                <span class="species-status status-endangered" data-en="Endangered" data-fa="در خطر انقراض">Endangered</span>
+                <p data-en="The Persian Gulf hosts about 7,500 dugongs, the second largest population after Australia. They are threatened by fishing nets and habitat loss." 
+                   data-fa="خلیج فارس میزبان حدود ۷۵۰۰ دوگونگ است که دومین جمعیت بزرگ پس از استرالیا محسوب می‌شود. تورهای ماهیگیری و از بین رفتن زیستگاه آنها را تهدید می‌کند.">
+                   The Persian Gulf hosts about 7,500 dugongs, the second largest population after Australia. They are threatened by fishing nets and habitat loss.
+                </p>
+            </div>
+            <div class="species-card">
+                <img src="https://s6.uupload.ir/files/wp11029569-niue-wallpapers_7vig.jpg" alt="Hawksbill Turtle" class="species-image">
+                <h3 class="species-name" data-en="Hawksbill Turtle" data-fa="لاک‌پشت پوزه عقابی">Hawksbill Turtle</h3>
+                <span class="species-status status-endangered" data-en="Critically Endangered" data-fa="به شدت در خطر انقراض">Critically Endangered</span>
+                <p data-en="These turtles nest on Persian Gulf islands. Their population has declined by 80% in the last century due to hunting for their beautiful shells." 
+                   data-fa="این لاک‌پشت‌ها در جزایر خلیج فارس تخم‌گذاری می‌کنند. جمعیت آنها در قرن گذشته به دلیل شکار برای پوسته زیبایشان ۸۰٪ کاهش یافته است.">
+                   These turtles nest on Persian Gulf islands. Their population has declined by 80% in the last century due to hunting for their beautiful shells.
+                </p>
+            </div>
+            <div class="species-card">
+                <img src="https://s6.uupload.ir/files/wp13238234-sea-coral-wallpapers_g3b7.jpg" alt="Coral Reefs" class="species-image">
+                <h3 class="species-name" data-en="Coral Reefs" data-fa="آبسنگ‌های مرجانی">Coral Reefs</h3>
+                <span class="species-status status-vulnerable" data-en="Vulnerable" data-fa="آسیب‌پذیر">Vulnerable</span>
+                <p data-en="The Persian Gulf has some of the most heat-resistant corals in the world, but they are threatened by rising temperatures and coastal development." 
+                   data-fa="خلیج فارس برخی از مقاوم‌ترین مرجان‌های جهان در برابر گرما را دارد، اما افزایش دما و توسعه سواحل آنها را تهدید می‌کند.">
+                   The Persian Gulf has some of the most heat-resistant corals in the world, but they are threatened by rising temperatures and coastal development.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transformation Section -->
+    <section class="transformation-section" id="transformation-section">
+        <div class="text-container">
+            <h2 class="arab-gulf-text">Arab Gulf</h2>
+            <h2 class="persian-gulf-text">Persian Gulf Forever</h2>
+            <div class="power-wave"></div>
+            <canvas class="particle-canvas"></canvas>
+        </div>
+    </section>
+
+    <footer>
+        <p data-en="© Persian Gulf | The Persian Gulf will always be the Persian Gulf" 
+           data-fa="© خلیج فارس | خلیج فارس همیشه خلیج فارس خواهد بود">© Persian Gulf | The Persian Gulf will always be the Persian Gulf</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/gh/persian-tools/persian-tools/build/persian-tools.umd.js"></script>
+    
+    <script>
+        // Create bubbles
+        function createBubbles() {
+            const container = document.getElementById('bubbles-container');
+            const bubbleCount = 20;
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                const size = Math.random() * 15 + 5;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                
+                bubble.style.left = `${Math.random() * 100}%`;
+                
+                const duration = Math.random() * 10 + 5;
+                bubble.style.animationDuration = `${duration}s`;
+                
+                bubble.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(bubble);
+            }
+        }
+        
+        // Animate the Persian Gulf path on load
+        function animateGulfPath() {
+            const path = document.getElementById('persian-gulf');
+            const length = path.getTotalLength();
+            
+            path.style.transition = 'none';
+            path.style.strokeDasharray = length + ' ' + length;
+            path.style.strokeDashoffset = length;
+            
+            setTimeout(() => {
+                path.style.transition = 'stroke-dashoffset 3s ease-in-out';
+                path.style.strokeDashoffset = '0';
+            }, 500);
+        }
+        
+        // Language toggle functionality
+        function toggleLanguage() {
+            const body = document.body;
+            const currentLang = body.getAttribute('lang') || 'en';
+            const newLang = currentLang === 'en' ? 'fa' : 'en';
+            
+            body.setAttribute('lang', newLang);
+            document.getElementById('lang-toggle').textContent = newLang === 'fa' ? 'English' : 'فارسی';
+            
+            // Update all elements with data attributes
+            document.querySelectorAll('[data-en], [data-fa]').forEach(el => {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = el.getAttribute(`data-${newLang}`);
+                } else {
+                    el.textContent = el.getAttribute(`data-${newLang}`);
+                }
+            });
+            
+            // Convert numbers to Persian if needed
+            if (newLang === 'fa') {
+                document.querySelectorAll('span, p, h1, h2, h3, h4, h5, h6').forEach(el => {
+                    el.textContent = el.textContent.replace(/\d+/g, num => persianTools.englishToPersian(num));
+                });
+            } else {
+                document.querySelectorAll('span, p, h1, h2, h3, h4, h5, h6').forEach(el => {
+                    el.textContent = el.textContent.replace(/[۰-۹]/g, num => persianTools.persianToEnglish(num));
+                });
+            }
+            
+            localStorage.setItem('preferredLang', newLang);
+        }
+        
+        // Initialize Timeline Animation
+        function initTimeline() {
+            const eras = document.querySelectorAll('.era');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            eras.forEach(era => {
+                observer.observe(era);
+            });
+        }
+        
+        // Setup transformation animation with restart capability
+        function setupTransformation() {
+            const section = document.getElementById('transformation-section');
+            const arabGulfText = document.querySelector('.arab-gulf-text');
+            const persianGulfText = document.querySelector('.persian-gulf-text');
+            const powerWave = document.querySelector('.power-wave');
+            const canvas = document.querySelector('.particle-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            let particles = [];
+            let emojis = [];
+            let animationTimeout;
+            
+            // Create particles
+            function createParticles() {
+                particles = [];
+                const particleCount = 80;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: canvas.height + 20,
+                        size: Math.random() * 8 + 3,
+                        color: `hsla(${Math.random() * 30 + 30}, 100%, 60%, ${Math.random() * 0.5 + 0.5})`,
+                        speedX: Math.random() * 6 - 3,
+                        speedY: Math.random() * -20 - 10,
+                        rotation: Math.random() * 360,
+                        rotationSpeed: Math.random() * 10 - 5,
+                        life: 100,
+                        currentLife: 0
+                    });
+                }
+            }
+            
+            // Create disgust emoji rain
+            function createEmojiRain() {
+                removeEmojiRain();
+                const container = document.querySelector('.text-container');
+                const emojiCount = 15;
+                
+                for (let i = 0; i < emojiCount; i++) {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'disgust-emoji';
+                    emoji.textContent = '🤢';
+                    emoji.style.left = `${Math.random() * 100}%`;
+                    emoji.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    emoji.style.animationDelay = `${Math.random() * 2}s`;
+                    container.appendChild(emoji);
+                    emojis.push(emoji);
+                }
+            }
+            
+            // Remove all disgust emojis
+            function removeEmojiRain() {
+                emojis.forEach(emoji => {
+                    if (emoji.parentNode) {
+                        emoji.parentNode.removeChild(emoji);
+                    }
+                });
+                emojis = [];
+            }
+            
+            // Animate particles
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                let activeParticles = 0;
+                
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    
+                    if (p.currentLife < p.life) {
+                        // Update position
+                        p.x += p.speedX;
+                        p.y += p.speedY;
+                        p.rotation += p.rotationSpeed;
+                        p.currentLife++;
+                        
+                        // Apply gravity
+                        p.speedY += 0.2;
+                        
+                        // Draw particle
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate(p.rotation * Math.PI / 180);
+                        
+                        // Gold sparkle effect
+                        const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, p.size);
+                        gradient.addColorStop(0, p.color);
+                        gradient.addColorStop(1, 'rgba(255,215,0,0)');
+                        
+                        ctx.fillStyle = gradient;
+                        ctx.beginPath();
+                        ctx.arc(0, 0, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+                        
+                        ctx.restore();
+                        activeParticles++;
+                    }
+                }
+                
+                if (activeParticles > 0) {
+                    requestAnimationFrame(animateParticles);
+                } else {
+                    canvas.style.opacity = '0';
+                }
+            }
+            
+            // Reset animation state
+            function resetAnimation() {
+                arabGulfText.style.animation = '';
+                arabGulfText.style.opacity = '1';
+                arabGulfText.style.transform = '';
+                
+                persianGulfText.style.animation = '';
+                persianGulfText.style.opacity = '0';
+                persianGulfText.style.transform = 'translateY(30px) scale(0.8)';
+                
+                powerWave.style.animation = '';
+                powerWave.style.opacity = '0';
+                powerWave.style.transform = 'scaleY(0)';
+                
+                canvas.style.opacity = '0';
+                removeEmojiRain();
+                clearTimeout(animationTimeout);
+            }
+            
+            // Start transformation animation
+            function startTransformation() {
+                resetAnimation();
+                
+                // Set canvas size
+                canvas.width = section.offsetWidth;
+                canvas.height = section.offsetHeight;
+                
+                createParticles();
+                createEmojiRain();
+                
+                // 1. Initial shake effect on "Arab Gulf"
+                arabGulfText.style.animation = 'arab-gulf-shake 0.5s ease infinite';
+                
+                // 2. After 1.5 seconds, start transformation
+                animationTimeout = setTimeout(() => {
+                    // Create power wave animation
+                    powerWave.style.animation = 'power-surge 0.8s ease-out forwards';
+                    
+                    // Persian Gulf emerges with power
+                    persianGulfText.style.opacity = '1';
+                    persianGulfText.style.animation = 'persian-gulf-emerge 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+                    
+                    // Arab Gulf shrinks and fades away weakly
+                    arabGulfText.style.animation = 'arab-gulf-disappear 0.6s ease-in forwards';
+                    
+                    // Remove all disgust emojis
+                    removeEmojiRain();
+                    
+                    // After Persian Gulf emerges, show celebration
+                    setTimeout(() => {
+                        // Show particles
+                        canvas.style.opacity = '1';
+                        animateParticles();
+                        
+                        // Add pulsing effect
+                        persianGulfText.style.animation = 'celebrate-pulse 2s ease infinite';
+                    }, 800);
+                }, 1500);
+            }
+            
+            // Intersection Observer to restart animation when scrolled into view
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        startTransformation();
+                    } else {
+                        resetAnimation();
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            observer.observe(section);
+        }
+
+        // Initialize everything when the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            createBubbles();
+            animateGulfPath();
+            initTimeline();
+            setupTransformation();
+            
+            // Set initial language
+            const preferredLang = localStorage.getItem('preferredLang') || 'en';
+            if (preferredLang === 'fa') {
+                toggleLanguage();
+            }
+            
+            // Language toggle event
+            document.getElementById('lang-toggle').addEventListener('click', toggleLanguage);
+            
+            // Scroll down button
+            document.getElementById('scroll-down').addEventListener('click', () => {
+                window.scrollTo({
+                    top: window.innerHeight,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Map point hover effects
+            document.querySelectorAll('.country, .island, .city').forEach(point => {
+                point.addEventListener('mouseenter', (e) => {
+                    const lang = document.body.getAttribute('lang') || 'en';
+                    const name = point.getAttribute(`data-name-${lang}`);
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'tooltip';
+                    tooltip.textContent = name;
+                    document.body.appendChild(tooltip);
+                    
+                    const rect = point.getBoundingClientRect();
+                    tooltip.style.left = `${rect.left + window.scrollX}px`;
+                    tooltip.style.top = `${rect.top + window.scrollY - 30}px`;
+                    tooltip.style.opacity = '1';
+                    
+                    point.style.transform = 'scale(1.5)';
+                    point.style.transition = 'transform 0.3s';
+                });
+                
+                point.addEventListener('mouseleave', () => {
+                    const tooltip = document.querySelector('.tooltip');
+                    if (tooltip) tooltip.remove();
+                    point.style.transform = 'scale(1)';
+                });
+            });
+        });
+
+        // Add tooltip styles dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            .tooltip {
+                position: absolute;
+                background-color: rgba(0, 0, 0, 0.7);
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-size: 14px;
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity 0.3s;
+                z-index: 10;
+                transform: translateX(-50%);
+            }
+            
+            body[lang="fa"] .tooltip {
+                font-family: 'Vazirmatn', 'Poppins', sans-serif;
+                transform: translateX(50%);
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Load Persian font
+        const persianFont = document.createElement('link');
+        persianFont.href = 'https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts.css';
+        persianFont.rel = 'stylesheet';
+        document.head.appendChild(persianFont);
+    </script>
+</body>
+</html>
